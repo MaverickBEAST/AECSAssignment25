@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # Optional: Specify certificate ARN if you have one from ACM for HTTPS
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:<your-account-id>:certificate/<your-certificate-id>
+spec:
+  rules:
+    - host: user.betterhealthservices.42web.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 80
+    - host: messaging.betterhealthservices.42web.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: messaging-service
+                port:
+                  number: 80
+    - host: counsellor.betterhealthservices.42web.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: counsellor-service
+                port:
+                  number: 80

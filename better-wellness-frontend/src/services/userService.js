@@ -1,7 +1,7 @@
 // src/services/userService.js
 import axios from "axios";
 
-const BASE_URL = "https://a8797e0c8948a4dd1b538090991eae26-1818452634.us-east-1.elb.amazonaws.com";
+const BASE_URL = "https://user.betterhealthservices.42web.io";
 
 const register = async (userData) => {
   const res = await axios.post(`${BASE_URL}/register`, userData);
