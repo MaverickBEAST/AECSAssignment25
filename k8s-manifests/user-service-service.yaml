@@ -9,4 +9,4 @@ spec:
     - protocol: TCP
       port: 80        # The port exposed by the service
       targetPort: 5000 # The container's port
-  type: ClusterIP    # Internal access – you can change to NodePort or LoadBalancer if needed.
+  type: LoadBalancer

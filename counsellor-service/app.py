@@ -69,6 +69,13 @@ def verify_cognito_token(token):
         raise ValueError("Token issuer mismatch")
     return claims
 
+# ----------------------------------------------------------------
+#  Health Check
+# ----------------------------------------------------------------
+@app.route("/health", methods=["GET"])
+def health():
+    return "Counsellors Service is healthy!", 200
+
 @app.route("/counsellors", methods=["GET"])
 def list_counsellors():
     """
