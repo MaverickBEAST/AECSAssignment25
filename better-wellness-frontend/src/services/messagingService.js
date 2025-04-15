@@ -1,7 +1,7 @@
 // src/services/messagingService.js
 import axios from "axios";
 
-const BASE_URL = "http://a0c30671dc307437cbe3dd0cfcdc82db-1851087082.us-east-1.elb.amazonaws.com";
+const BASE_URL = "https://a0c30671dc307437cbe3dd0cfcdc82db-1851087082.us-east-1.elb.amazonaws.com";
 
 const createMessage = async (token, messageData) => {
   const res = await axios.post(`${BASE_URL}/messages`, messageData, {
