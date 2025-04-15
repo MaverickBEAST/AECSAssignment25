@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-service-deployment
+  labels:
+    app: messaging-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: messaging-service
+  template:
+    metadata:
+      labels:
+        app: messaging-service
+    spec:
+      containers:
+      - name: messaging-service
+        image: 779846807200.dkr.ecr.us-east-1.amazonaws.com/messaging-service:latest
+        ports:
+        - containerPort: 5002
+        env:
+          - name: AWS_REGION
+            value: "us-east-1"
+          - name: MESSAGES_TABLE_NAME
+            value: "Messages"
+          - name: SESSIONS_TABLE_NAME
+            value: "Sessions"
+          - name: COGNITO_USER_POOL_ID
+            value: "us-east-1_WhwqzXWPq"
+          - name: COGNITO_USER_POOL_CLIENT_ID
+            value: "5rujc50rsvmdd624a531qmh8tf"
+      imagePullSecrets:
+      - name: regcred

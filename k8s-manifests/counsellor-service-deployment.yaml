@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counsellor-service-deployment
+  labels:
+    app: counsellor-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: counsellor-service
+  template:
+    metadata:
+      labels:
+        app: counsellor-service
+    spec:
+      containers:
+      - name: counsellor-service
+        image: 779846807200.dkr.ecr.us-east-1.amazonaws.com/counsellor-service:latest
+        ports:
+        - containerPort: 5001
+        env:
+          - name: AWS_REGION
+            value: "us-east-1"
+          - name: USERS_TABLE_NAME
+            value: "Users"
+          - name: COGNITO_USER_POOL_ID
+            value: "us-east-1_WhwqzXWPq"
+          - name: COGNITO_USER_POOL_CLIENT_ID
+            value: "5rujc50rsvmdd624a531qmh8tf"
+      imagePullSecrets:
+      - name: regcred

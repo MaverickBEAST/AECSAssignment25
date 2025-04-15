@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 80        # The port exposed by the service
+      targetPort: 5000 # The container's port
+  type: ClusterIP    # Internal access – you can change to NodePort or LoadBalancer if needed.
