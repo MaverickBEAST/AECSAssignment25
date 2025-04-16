@@ -1,7 +1,7 @@
 // src/services/messagingService.js
 import axios from "axios";
 
-const BASE_URL = "https://messaging.betterhealthservices.42web.io";
+const BASE_URL = "http://messaging.betterhealthservices.42web.io";
 
 const createMessage = async (token, messageData) => {
   const res = await axios.post(`${BASE_URL}/messages`, messageData, {

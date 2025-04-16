@@ -4,11 +4,9 @@ metadata:
   name: backend-ingress
   namespace: default
   annotations:
-    kubernetes.io/ingress.class: "alb"
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    # Optional: Specify certificate ARN if you have one from ACM for HTTPS
-    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:<your-account-id>:certificate/<your-certificate-id>
+    # No need for SSL redirect when using HTTP only
 spec:
+  ingressClassName: alb  # or your chosen Ingress controller class
   rules:
     - host: user.betterhealthservices.42web.io
       http:
