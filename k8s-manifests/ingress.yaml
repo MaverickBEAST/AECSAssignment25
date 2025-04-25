@@ -4,11 +4,17 @@ metadata:
   name: backend-ingress
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-north-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx   # <─ create in ACM first>
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/target-type: ip   
+    alb.ingress.kubernetes.io/ssl-redirect: '443'     
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-north-1:484139598244:certificate/a535952e-8798-4873-9595-759baece3f51
 spec:
   ingressClassName: alb
+  tls:
+  - hosts:
+    - user.betterhealthservices.42web.io
+    - messaging.betterhealthservices.42web.io
+    - counsellor.betterhealthservices.42web.io
   rules:
   - host: user.betterhealthservices.42web.io
     http:

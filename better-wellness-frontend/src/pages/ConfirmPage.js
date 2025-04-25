@@ -1,65 +1,48 @@
 // src/pages/ConfirmPage.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function ConfirmPage() {
-  // If the user was redirected from registration, we can pre-fill the email:
-  const { state } = useLocation();
-  const [email, setEmail] = useState(state && state.email ? state.email : "");
-  const [confirmationCode, setConfirmationCode] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+const BASE_URL = "https://user.betterhealthservices.42web.io";
+
+export default function ConfirmPage() {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const qs = new URLSearchParams(search);
+  const email = qs.get("email") || "";
+  const code  = qs.get("code")  || "";
 
-  const handleConfirm = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
+  const [status, setStatus] = useState("Verifying…");
+  const [error,  setError]  = useState("");
 
-    try {
-      const res = await axios.post("http://localhost:5000/confirm", {
-        email,
-        confirmation_code: confirmationCode,
-      });
-      setMessage("Your account has been confirmed! Redirecting to login...");
-      // After confirmation, redirect to login page after a short delay:
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-    } catch (err) {
-      setError(err.response?.data?.error || err.message);
+  useEffect(() => {
+    // if either param is missing, show an error
+    if (!email || !code) {
+      setError("Invalid confirmation link.");
+      setStatus("");
+      return;
     }
-  };
+
+    // auto-confirm on mount
+    axios
+      .post(`${BASE_URL}/confirm`, { email, confirmation_code: code })
+      .then(() => {
+        setStatus("✅ Your account has been confirmed!");
+        setTimeout(() => navigate("/login"), 2000);
+      })
+      .catch((err) => {
+        const msg = err.response?.data?.error || err.message;
+        setError(`Could not confirm: ${msg}`);
+        setStatus("");
+      });
+  }, [email, code, navigate]);
 
   return (
-    <div>
-      <h2>Confirm Your Account</h2>
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      <form onSubmit={handleConfirm}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirmation Code:</label>
-          <input
-            type="text"
-            value={confirmationCode}
-            onChange={(e) => setConfirmationCode(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Confirm Account</button>
-      </form>
+    <div style={{ maxWidth: 400, margin: "2rem auto", textAlign: "center" }}>
+      <h2>Account Confirmation</h2>
+      {status && <p style={{ color: "green" }}>{status}</p>}
+      {error  && <p style={{ color: "red"   }}>{error }</p>}
+      {!status && !error && <p>Waiting for confirmation…</p>}
     </div>
   );
 }
-
-export default ConfirmPage;

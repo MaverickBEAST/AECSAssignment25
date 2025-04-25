@@ -13,4 +13,12 @@ const login = async (email, password) => {
   return res.data;
 };
 
+const confirmEmail = async (token) => {
+  // hits GET /confirm?token=… on your ALB → user-service
+  const res = await axios.get(`${BASE_URL}/confirm`, {
+    params: { token }
+  });
+  return res.data;
+};
+
 export default { register, login };

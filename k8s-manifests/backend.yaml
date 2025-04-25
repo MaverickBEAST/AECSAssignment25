@@ -44,7 +44,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5000
-  type: ClusterIP
+  type: NodePort
 
 ---
 # messaging-service Deployment + Service
@@ -94,7 +94,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5002
-  type: ClusterIP
+  type: NodePort
 
 ---
 # counsellor-service Deployment + Service
@@ -142,4 +142,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 5001
-  type: ClusterIP
+  type: NodePort
