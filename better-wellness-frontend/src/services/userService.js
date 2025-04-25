@@ -13,12 +13,13 @@ const login = async (email, password) => {
   return res.data;
 };
 
-const confirmEmail = async (token) => {
-  // hits GET /confirm?token=… on your ALB → user-service
-  const res = await axios.get(`${BASE_URL}/confirm`, {
-    params: { token }
+const confirm = async (email, confirmationCode) => {
+  const res = await axios.post(`${BASE_URL}/confirm`, {
+    email,
+    confirmation_code: confirmationCode,
   });
   return res.data;
 };
 
-export default { register, login };
+
+export default { register, login, confirm };
