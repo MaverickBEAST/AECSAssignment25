@@ -25,8 +25,8 @@ spec:
           - name: USERS_TABLE_NAME
             value: "Users"
           - name: COGNITO_USER_POOL_ID
-            value: "us-east-1_WhwqzXWPq"
+            value: "us-east-1_iWIgTNOG4"
           - name: COGNITO_USER_POOL_CLIENT_ID
-            value: "5rujc50rsvmdd624a531qmh8tf"
+            value: "1sl2ivi5ob2vvsulmket96tfhp"
       imagePullSecrets:
       - name: regcred

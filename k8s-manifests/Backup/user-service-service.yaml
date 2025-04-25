@@ -9,4 +9,4 @@ spec:
     - protocol: TCP
       port: 80        # The port exposed by the service
       targetPort: 5000 # The container's port
-  type: LoadBalancer
+  type: ClusterIP

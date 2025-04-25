@@ -2,46 +2,41 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: backend-ingress
-  namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/default-ssl-certificate: "default/selfsigned-cert"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:eu-north-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx   # <─ create in ACM first>
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
 spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - user.betterhealthservices.42web.io
-        - messaging.betterhealthservices.42web.io
-        - counsellor.betterhealthservices.42web.io
-      secretName: selfsigned-cert
+  ingressClassName: alb
   rules:
-    - host: user.betterhealthservices.42web.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: user-service
-                port:
-                  number: 80
-    - host: messaging.betterhealthservices.42web.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: messaging-service
-                port:
-                  number: 80
-    - host: counsellor.betterhealthservices.42web.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: counsellor-service
-                port:
-                  number: 80
+  - host: user.betterhealthservices.42web.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80
+  - host: messaging.betterhealthservices.42web.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: messaging-service
+            port:
+              number: 80
+  - host: counsellor.betterhealthservices.42web.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: counsellor-service
+            port:
+              number: 80

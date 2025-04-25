@@ -1,0 +1,145 @@
+---
+# user‑service Deployment + Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service-deployment
+  labels:
+    app: user-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: user-service
+          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: AWS_REGION
+              value: eu-north-1
+            - name: COGNITO_USER_POOL_ID
+              value: eu-north-1_GHg1Vmizq
+            - name: COGNITO_USER_POOL_CLIENT_ID
+              value: 46du2cf873bbrj2sd6jtkuupsv
+            - name: USERS_TABLE_NAME
+              value: Users
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: ClusterIP
+
+---
+# messaging-service Deployment + Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-service-deployment
+  labels:
+    app: messaging-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: messaging-service
+  template:
+    metadata:
+      labels:
+        app: messaging-service
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: messaging-service
+          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          ports:
+            - containerPort: 5002
+          env:
+            - name: AWS_REGION
+              value: eu-north-1
+            - name: MESSAGES_TABLE_NAME
+              value: Messages
+            - name: SESSIONS_TABLE_NAME
+              value: Sessions
+            - name: COGNITO_USER_POOL_ID
+              value: eu-north-1_GHg1Vmizq
+            - name: COGNITO_USER_POOL_CLIENT_ID
+              value: 46du2cf873bbrj2sd6jtkuupsv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging-service
+spec:
+  selector:
+    app: messaging-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5002
+  type: ClusterIP
+
+---
+# counsellor-service Deployment + Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counsellor-service-deployment
+  labels:
+    app: counsellor-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: counsellor-service
+  template:
+    metadata:
+      labels:
+        app: counsellor-service
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: counsellor-service
+          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          ports:
+            - containerPort: 5001
+          env:
+            - name: AWS_REGION
+              value: eu-north-1
+            - name: USERS_TABLE_NAME
+              value: Users
+            - name: COGNITO_USER_POOL_ID
+              value: eu-north-1_GHg1Vmizq
+            - name: COGNITO_USER_POOL_CLIENT_ID
+              value: 46du2cf873bbrj2sd6jtkuupsv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: counsellor-service
+spec:
+  selector:
+    app: counsellor-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5001
+  type: ClusterIP

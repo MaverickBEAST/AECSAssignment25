@@ -22,10 +22,10 @@ spec:
         env:
           - name: AWS_REGION
             value: "us-east-1"
-          - name: USER_POOL_ID
-            value: "us-east-1_WhwqzXWPq"
+          - name: COGNITO_USER_POOL_ID
+            value: "us-east-1_iWIgTNOG4"
           - name: COGNITO_USER_POOL_CLIENT_ID
-            value: "5rujc50rsvmdd624a531qmh8tf"
+            value: "1sl2ivi5ob2vvsulmket96tfhp"
           - name: USERS_TABLE_NAME
             value: "Users"
       imagePullSecrets:
