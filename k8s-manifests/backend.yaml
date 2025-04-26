@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service-deployment
+  name: user-service
   labels:
     app: user-service
 spec:
@@ -27,9 +27,9 @@ spec:
             - name: AWS_REGION
               value: eu-north-1
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_GHg1Vmizq
+              value: eu-north-1_Rxxy1sqje
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 46du2cf873bbrj2sd6jtkuupsv
+              value: 3h7k0et1t79tf6ah34bh35givr
             - name: USERS_TABLE_NAME
               value: Users
 ---
@@ -51,7 +51,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: messaging-service-deployment
+  name: messaging-service
   labels:
     app: messaging-service
 spec:
@@ -79,9 +79,9 @@ spec:
             - name: SESSIONS_TABLE_NAME
               value: Sessions
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_GHg1Vmizq
+              value: eu-north-1_Rxxy1sqje
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 46du2cf873bbrj2sd6jtkuupsv
+              value: 3h7k0et1t79tf6ah34bh35givr
 ---
 apiVersion: v1
 kind: Service
@@ -101,7 +101,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: counsellor-service-deployment
+  name: counsellor-service
   labels:
     app: counsellor-service
 spec:
@@ -127,9 +127,9 @@ spec:
             - name: USERS_TABLE_NAME
               value: Users
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_GHg1Vmizq
+              value: eu-north-1_Rxxy1sqje
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 46du2cf873bbrj2sd6jtkuupsv
+              value: 3h7k0et1t79tf6ah34bh35givr
 ---
 apiVersion: v1
 kind: Service
