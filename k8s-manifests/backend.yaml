@@ -68,7 +68,7 @@ spec:
         - name: regcred
       containers:
         - name: messaging-service
-          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/messaging-service:latest
           ports:
             - containerPort: 5002
           env:
@@ -118,7 +118,7 @@ spec:
         - name: regcred
       containers:
         - name: counsellor-service
-          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/counsellor-service:latest
           ports:
             - containerPort: 5001
           env:

@@ -1,0 +1,16 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions     = v3_req
+prompt             = no
+
+[req_distinguished_name]
+CN = *.betterhealthservices.42web.io
+
+[v3_req]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = *.betterhealthservices.42web.io
+DNS.2 = user.betterhealthservices.42web.io
+DNS.3 = messaging.betterhealthservices.42web.io
+DNS.4 = counsellor.betterhealthservices.42web.io
