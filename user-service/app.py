@@ -86,7 +86,7 @@ def register():
         cognito_attributes.append({"Name": "custom:specialization", "Value": specialization})
 
     # Generate a unique username that is not in email format
-    username = "user-" + str(uuid.uuid4())
+    username = email
 
     try:
         sign_up_resp = cognito_idp.sign_up(

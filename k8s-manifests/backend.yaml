@@ -21,6 +21,7 @@ spec:
       containers:
         - name: user-service
           image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/user-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
           env:
@@ -69,6 +70,7 @@ spec:
       containers:
         - name: messaging-service
           image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/messaging-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5002
           env:
@@ -119,6 +121,7 @@ spec:
       containers:
         - name: counsellor-service
           image: 484139598244.dkr.ecr.eu-north-1.amazonaws.com/counsellor-service:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5001
           env:

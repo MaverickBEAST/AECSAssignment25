@@ -64,10 +64,10 @@
   #OR Create Manually And
 
     # 3a. Create User Pool
-    $POOL_ID = "eu-north-1_Rxxy1sqje"
+    $POOL_ID = "eu-north-1_JbXYV1Am1"
 
     # 3b. Create App Client (no secret, for browser)
-    $CLIENT_ID = "3h7k0et1t79tf6ah34bh35givr"
+    $CLIENT_ID = "7rkbkqug15sa9dv9vgllu748ub"
 
     Write-Host "User Pool ID: $POOL_ID"
     Write-Host "Client ID:   $CLIENT_ID"

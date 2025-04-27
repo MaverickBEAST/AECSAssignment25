@@ -1,0 +1,82 @@
+$region = "eu-north-1"
+$sshKey = "BetterHealthKey"
+$repo   = "https://github.com/MaverickBEAST/AECSAssignment25"
+$secret = "arn:aws:secretsmanager:eu-north-1:484139598244:secret:github_token1"
+$ACCOUNT = aws sts get-caller-identity --query Account --output text
+
+aws cloudformation deploy `
+  --template-file full-stack.yaml `
+  --stack-name better-health-full-infra `
+  --capabilities CAPABILITY_NAMED_IAM `
+  --parameter-overrides `
+    SSHKeyName=BetterHealthKey `
+    FrontendRepo=https://github.com/MaverickBEAST/AECSAssignment25 `
+    GitHubTokenSecretArn=arn:aws:secretsmanager:eu-north-1:484139598244:secret:github_token1 `
+  --region eu-north-1
+
+  aws cloudformation describe-stacks `
+  --stack-name better-health-full-infra `
+  --region $region `
+  --query "Stacks[0].Outputs" --output table
+
+aws eks update-kubeconfig `
+  --name (aws cloudformation describe-stacks --stack-name better-health-full-infra --query "Stacks[0].Outputs[?OutputKey=='ClusterName'].OutputValue" --output text) `
+  --region $region
+
+# pull URIs from CFN outputs
+$userRepo = (aws cloudformation describe-stacks --stack-name better-health-full-infra --query "Stacks[0].Outputs[?OutputKey=='UserServiceRepoUri'].OutputValue" --output text)
+aws ecr get-login-password --region $region |
+  docker login --username AWS --password-stdin $userRepo.Split('/')[0]
+
+#cd better-wellness folder
+cd C:\Users\Banuk\OneDrive\Desktop\AECS\Project\AECSAssignment25\better-wellness
+      docker build -t user-service:latest .\user-service
+      docker tag user-service:latest "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/user-service:latest"
+      docker push "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/user-service:latest"
+
+
+      docker build -t messaging-service:latest .\messaging-service
+      docker tag messaging-service:latest "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/messaging-service:latest"
+      docker push "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/messaging-service:latest"
+
+
+      docker build -t counsellor-service:latest .\counsellor-service
+      docker tag counsellor-service:latest "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/counsellor-service:latest"
+      docker push "$ACCOUNT.dkr.ecr.$REGION.amazonaws.com/counsellor-service:latest"
+
+
+#Deploy your k8s manifests (backend + ingress + self-signed TLS):
+cd C:\Users\Banuk\OneDrive\Desktop\AECS\Project\AECSAssignment25\better-wellness\k8s-manifests
+
+kubectl apply -f backend.yaml
+kubectl rollout status deploy/user-service
+kubectl rollout status deploy/messaging-service
+kubectl rollout status deploy/counsellor-service
+
+# install ingress-nginx
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx `
+  --namespace ingress-nginx --create-namespace `
+  --set controller.service.type=LoadBalancer
+
+
+# wait then self-sign TLS 
+#CD to certs folder
+cd C:\Users\Banuk\OneDrive\Desktop\AECS\Project\AECSAssignment25\better-wellness\certs
+
+openssl req -x509 -nodes -days 365 `
+  --newkey rsa:2048 `
+  --keyout tls.key --out tls.crt `
+  --subj "/CN=*.betterhealthservices.42web.io/O=BetterHealth" `
+  --addext "subjectAltName=DNS:betterhealthservices.42web.io,DNS:user.betterhealthservices.42web.io,DNS:messaging.betterhealthservices.42web.io,DNS:counsellor.betterhealthservices.42web.io"
+
+cd C:\Users\Banuk\OneDrive\Desktop\AECS\Project\AECSAssignment25\better-wellness\k8s-manifests
+kubectl create secret tls tls-selfsigned --cert=tls.crt --key=tls.key
+kubectl apply -f ingress.yaml
+
+nslookup {your ALB DNS}
+
+curl.exe https://user.betterhealthservices.42web.io/health -k
+curl.exe https://messaging.betterhealthservices.42web.io/health -k
+curl.exe https://counsellor.betterhealthservices.42web.io/health -k
