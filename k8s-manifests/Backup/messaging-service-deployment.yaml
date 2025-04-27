@@ -27,8 +27,8 @@ spec:
           - name: SESSIONS_TABLE_NAME
             value: "Sessions"
           - name: COGNITO_USER_POOL_ID
-            value: "us-east-1_iWIgTNOG4"
+            value: "eu-north-1_JbXYV1Am1"
           - name: COGNITO_USER_POOL_CLIENT_ID
-            value: "1sl2ivi5ob2vvsulmket96tfhp"
+            value: "7rkbkqug15sa9dv9vgllu748ub"
       imagePullSecrets:
       - name: regcred

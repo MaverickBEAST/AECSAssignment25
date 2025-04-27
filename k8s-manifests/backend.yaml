@@ -27,9 +27,9 @@ spec:
             - name: AWS_REGION
               value: eu-north-1
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_Rxxy1sqje
+              value: eu-north-1_JbXYV1Am1
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 3h7k0et1t79tf6ah34bh35givr
+              value: 7rkbkqug15sa9dv9vgllu748ub
             - name: USERS_TABLE_NAME
               value: Users
 ---
@@ -79,9 +79,9 @@ spec:
             - name: SESSIONS_TABLE_NAME
               value: Sessions
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_Rxxy1sqje
+              value: eu-north-1_JbXYV1Am1
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 3h7k0et1t79tf6ah34bh35givr
+              value: 7rkbkqug15sa9dv9vgllu748ub
 ---
 apiVersion: v1
 kind: Service
@@ -127,9 +127,9 @@ spec:
             - name: USERS_TABLE_NAME
               value: Users
             - name: COGNITO_USER_POOL_ID
-              value: eu-north-1_Rxxy1sqje
+              value: eu-north-1_JbXYV1Am1
             - name: COGNITO_USER_POOL_CLIENT_ID
-              value: 3h7k0et1t79tf6ah34bh35givr
+              value: 7rkbkqug15sa9dv9vgllu748ub
 ---
 apiVersion: v1
 kind: Service

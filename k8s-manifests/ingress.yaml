@@ -4,15 +4,17 @@ metadata:
   name: backend-ingress
   namespace: default
   annotations:
+    kubernetes.io/ingress.class: nginx 
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  ingressClassName: nginx 
   tls:
   - hosts:
     - user.betterhealthservices.42web.io
     - messaging.betterhealthservices.42web.io
     - counsellor.betterhealthservices.42web.io
     secretName: tls-selfsigned
-    
+
   rules:
   - host: user.betterhealthservices.42web.io
     http:
